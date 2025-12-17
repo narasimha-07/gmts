@@ -1,0 +1,4528 @@
+{
+	"info": {
+		"_postman_id": "e7eb17fe-5a2c-4830-9bd1-92040b0847c8",
+		"name": "Narasimha_gtms_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44035001"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "user login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Access is present\", () => {\r",
+									"    pm.expect(responseData.keyCloakTokenData).to.have.property(\"access_token\")\r",
+									"     }\r",
+									"     )\r",
+									"pm.environment.set(\"Access token\",responseData.keyCloakTokenData.access_token);\r",
+									"console.log(\"Access Token response is stored in GTMS_API_NARASIMHA environment\", responseData.keyCloakTokenData.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"userMetaData\": {\r\n    \"userId\": \"narasimha\",\r\n    \"password\": \"9876\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/user/web/login",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"web",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetching user details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"// if (!token) {\r",
+									"//     console.log(\"Access token is not found in environment variables\");\r",
+									"// } else {\r",
+									"    pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });\r",
+									"//     console.log(\"Authorization header set with token:\", token)\r",
+									"// }"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Access token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/fetchUserDetails",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"fetchUserDetails"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserDashboard",
+			"item": [
+				{
+					"name": "getAllCount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Access token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/device/getAllCounts",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"device",
+								"getAllCounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getModelsNameAndCountReport",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Access token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getModelsNameAndCountReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getModelsNameAndCountReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NewlyActiveDevicesReport",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Access token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"reportInfo\": {\r\n    \"sortBy\": \"string\",\r\n    \"validFrom\": \"2024-01-01-01-00\",\r\n    \"validUpTo\": \"2025-11-01-01-00\",\r\n    \"serialNumber\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getNewlyActivatedDevicesReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getNewlyActivatedDevicesReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "devicesOnlineReport",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Access token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"reportInfo\": {\r\n    \"sortBy\": \"string\",\r\n    \"validFrom\": \"2025-01-01-01-00\",\r\n    \"validUpTo\": \"2025-11-01-01-00\",\r\n    \"serialNumber\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getDeviceOnlineReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getDeviceOnlineReport"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User and Role module",
+			"item": [
+				{
+					"name": "fetchAllUsers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Access token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/fetchAllUserDetails?max=100&first=1",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"fetchAllUserDetails"
+							],
+							"query": [
+								{
+									"key": "max",
+									"value": "100"
+								},
+								{
+									"key": "first",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\")\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is below 5000ms\", () => {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+									"});",
+									"",
+									"let responseData = pm.response.json();",
+									"pm.test(\"Validate success message\", () => {",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"User Created Successfully\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"username\": \"nag\",\r\n  \"email\": \"nag@yopmail.com\",\r\n  \"firstName\": \"naga\",\r\n  \"lastName\": \"ina\",\r\n  \"otp\": false,\r\n  \"userType\": \"TMS_USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/create",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetching all user after adding new user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         });\r",
+									"\r",
+									"    \r",
+									"    let responseData = pm.response.json();\r",
+									"    let userList = responseData.userDetailsList;\r",
+									"\r",
+									"    for (let i=0; i<userList.length; i++)\r",
+									"    {\r",
+									"        if(userList[i].username === \"nag\"){\r",
+									"        pm.environment.set(\"userId\", userList[i].id)\r",
+									"        console.log(\"userId stored in environment Successfully\", userList[i].id)\r",
+									"        break;\r",
+									"        }\r",
+									"    }"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/fetchAllUserDetails?max=100&first=1",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"fetchAllUserDetails"
+							],
+							"query": [
+								{
+									"key": "max",
+									"value": "100"
+								},
+								{
+									"key": "first",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "enable or disable user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: 'Authorization',\r",
+									"    value: 'Bearer ' + token\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"}\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         });\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate success message\", () => {\r",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"User disabled successfully\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"userId\": \"{{userId}}\",\r\n  \"enabledOrDisable\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/enableOrDisable",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"enableOrDisable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchClientRoles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         });\r",
+									"\r",
+									" let responseData = pm.response.json();\r",
+									"pm.test(\"Validate success message\", () => {\r",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"fetch all client role\");\r",
+									"});        "
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/fetchClientRoles",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"fetchClientRoles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Role",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \"+ token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate success message\", () => {\r",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"Client Role Created Successfully\");\r",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"clientRoleData\": [\r\n    {\r\n      \"id\": \"Testrole\",\r\n      \"name\": \"TestRoletesting\",\r\n      \"description\": \"Testing Purpose\"\r\n    }\r\n  ],\r\n  \"userId\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/createClientRole",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"createClientRole"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetching all role after client role creation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate success message\", () => {\r",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"fetch all client role\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// let res = pm.response.json();\r",
+									"// // Extract the clientRolesList array\r",
+									"// let roles = res.clientRolesList;\r",
+									"\r",
+									"// // Loop through and store each role ID in a separate variable\r",
+									"// for (let i = 0; i < roles.length; i++) {\r",
+									"//     let varName = `roleId_${i + 1}`;\r",
+									"//     pm.environment.set(varName, roles[i].id);\r",
+									"//     console.log(`✅ Stored ${varName}: ${roles[i].id}`);\r",
+									"// }\r",
+									"\r",
+									"// console.log(\"🎯 All role IDs saved successfully!\");\r",
+									"\r",
+									"\r",
+									"// // Parse JSON response\r",
+									"// let res = pm.response.json();\r",
+									"// // Get roles list\r",
+									"// let roles = res.clientRolesList;\r",
+									"// // Loop through each role and create variable using its name\r",
+									"// roles.forEach(role => {\r",
+									"//     // Convert role name to uppercase-safe variable (no spaces)\r",
+									"//     let varName = role.name.trim();\r",
+									"//     // Set environment variable (name = role name, value = role id)\r",
+									"//     pm.environment.set(varName, role.id);\r",
+									"//     console.log(`✅ Stored ${varName} = ${role.id}`);\r",
+									"// });\r",
+									"\r",
+									"// Optionally, store all roles in one array for later use\r",
+									"//pm.environment.set(\"allRoles\", JSON.stringify(roles));\r",
+									"//console.log(\"✅ All roles saved as environment variables successfully!\");\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"let res = pm.response.json();\r",
+									"let roles = res.clientRolesList;\r",
+									"\r",
+									"if (roles && roles.length > 0) {\r",
+									"    roles.forEach(role => {\r",
+									"        let baseVarName = role.name.trim();\r",
+									"\r",
+									"        pm.environment.set(`${baseVarName}_ID`, role.id);\r",
+									"        pm.environment.set(`${baseVarName}_NAME`, role.name);\r",
+									"        pm.environment.set(`${baseVarName}_DESC`, role.description);\r",
+									"\r",
+									"        console.log(`✅ Stored ${baseVarName}_ID = ${role.id}`);\r",
+									"        console.log(`✅ Stored ${baseVarName}_NAME = ${role.name}`);\r",
+									"        console.log(`✅ Stored ${baseVarName}_DESC = ${role.description}`);\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"❌ clientRolesList is empty or undefined!\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/fetchClientRoles",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"fetchClientRoles"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Fetching all role after client role creation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{keyauthbaseurl}}/api/admin/fetchClientRoles",
+									"host": [
+										"{{keyauthbaseurl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"fetchClientRoles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Nov 2025 06:35:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"apiOutContext\": {\n        \"timeStamp\": \"2025-11-07 06:35:25.964588149\",\n        \"outputRefId\": \"string\",\n        \"code\": \"200\",\n        \"status\": \"Success\",\n        \"message\": \"fetch all client role\"\n    },\n    \"clientRolesList\": [\n        {\n            \"id\": \"ec1fc357-5773-4840-8eb7-cd561d5f6cd1\",\n            \"name\": \"TMS_ADMIN\",\n            \"description\": \"TMS_ADMIN\",\n            \"composite\": true,\n            \"clientRole\": true,\n            \"containerId\": \"f2dce009-9b73-40a4-b223-ae9154213c59\"\n        },\n        {\n            \"id\": \"db94e7d2-663f-42dd-abb5-becbfa56be0f\",\n            \"name\": \"TXN_ADMIN\",\n            \"description\": \"TXN_ADMIN\",\n            \"composite\": false,\n            \"clientRole\": true,\n            \"containerId\": \"f2dce009-9b73-40a4-b223-ae9154213c59\"\n        },\n        {\n            \"id\": \"55f1e71d-334f-4879-a74d-bf044ac75a4a\",\n            \"name\": \"keycloak-admin\",\n            \"description\": \"keycloak admin has all roles\",\n            \"composite\": true,\n            \"clientRole\": true,\n            \"containerId\": \"f2dce009-9b73-40a4-b223-ae9154213c59\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "user roles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"userId\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/userRoles",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"userRoles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign role to user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate success message\", () => {\r",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"Client Role assigned to user Successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"assignRoleData\": [\r\n    {\r\n      \"id\": \"{{TMS_ADMIN_ID}}\",\r\n      \"name\": \"{{TMS_ADMIN_NAME}}\",\r\n      \"description\": \"{{TMS_ADMIN_DESC}}\"\r\n    }\r\n  ],\r\n  \"userId\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/assignClientRoleToUser",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"assignClientRoleToUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetching user roles after role is assigned",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"userId\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/userRoles",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"userRoles"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"userId\": \"{{userId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{keyauthbaseurl}}/api/admin/userRoles",
+									"host": [
+										"{{keyauthbaseurl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"userRoles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 07 Nov 2025 06:44:34 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"apiOutContext\": {\n        \"timeStamp\": \"2025-11-07 06:44:34.944320944\",\n        \"outputRefId\": \"string\",\n        \"code\": \"200\",\n        \"status\": \"Success\",\n        \"message\": \"User roles\"\n    },\n    \"clientRolesList\": [\n        {\n            \"id\": \"ec1fc357-5773-4840-8eb7-cd561d5f6cd1\",\n            \"name\": \"TMS_ADMIN\",\n            \"description\": \"TMS_ADMIN\",\n            \"composite\": true,\n            \"clientRole\": true,\n            \"containerId\": \"f2dce009-9b73-40a4-b223-ae9154213c59\"\n        },\n        {\n            \"id\": \"db94e7d2-663f-42dd-abb5-becbfa56be0f\",\n            \"name\": \"TXN_ADMIN\",\n            \"description\": \"TXN_ADMIN\",\n            \"composite\": false,\n            \"clientRole\": true,\n            \"containerId\": \"f2dce009-9b73-40a4-b223-ae9154213c59\"\n        },\n        {\n            \"id\": \"55f1e71d-334f-4879-a74d-bf044ac75a4a\",\n            \"name\": \"keycloak-admin\",\n            \"description\": \"keycloak admin has all roles\",\n            \"composite\": true,\n            \"clientRole\": true,\n            \"containerId\": \"f2dce009-9b73-40a4-b223-ae9154213c59\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Unassign roles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate success message\", () => {\r",
+									"    pm.expect(responseData.apiOutContext.message).to.eql(\"Client role unassigned successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"clientRoleData\": [\r\n    {\r\n      \"id\": \"{{TMS_ADMIN_ID}}\",\r\n      \"name\": \"{{TMS_ADMIN_NAME}}\",\r\n      \"description\": \"{{TMS_ADMIN_DESC}}\"\r\n    }\r\n  ],\r\n  \"userId\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/unassign",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"unassign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetching user after role is unassigned",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"deviceMetaData\": {\r\n    \"deviceId\": \"string\"\r\n  },\r\n  \"userId\": \"{{userId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{keyauthbaseurl}}/api/admin/userRoles",
+							"host": [
+								"{{keyauthbaseurl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"userRoles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Acquirer module",
+			"item": [
+				{
+					"name": "getAll acquirers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/acquirerTxn/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"acquirerTxn",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add acquirer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"acquirerTnXInfo\": {\r\n    \"ppName\": \"HDFC\",\r\n    \"ppBaseUrl\": \"https://pn-europa-uat.paynext.co.in/io/v1.0/h2hpayments\",\r\n    \"ppId\": \"1011182123\",\r\n    \"ppMwRequesterId\": \"2321181110\",\r\n    \"serviceDataProtocol\": \"JSON\",\r\n    \"serviceAuthType\": \"JWT\",\r\n    \"serviceAuthEnabled\": true,\r\n    \"connectivityType\": \"MTLS\",\r\n    \"pinTransRequired\": 3,\r\n    \"dataEncRequired\": 3,\r\n    \"macCheckRequired\": 0,\r\n    \"address\": \"chidambara stadium\",\r\n    \"city\": \"chennai\",\r\n    \"state\": \"Tamilnadu\",\r\n    \"country\": \"India\",\r\n    \"pinCode\": \"500007\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/acquirerTxn/add",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"acquirerTxn",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll acquirers after adding acquirer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									" let res = pm.response.json();\r",
+									"let acquirers = res.outputData;\r",
+									"\r",
+									"if (acquirers && acquirers.length > 0) {\r",
+									"    let acquirerMap = {};\r",
+									"\r",
+									"    acquirers.forEach(acquirer => {\r",
+									"        let baseVarName = acquirer.ppName.trim();\r",
+									"\r",
+									"        // build the map (ppName → id)\r",
+									"        acquirerMap[baseVarName] = acquirer.id;\r",
+									"\r",
+									"        console.log(`✅ Stored ${baseVarName} = ${acquirer.id}`);\r",
+									"    });\r",
+									"\r",
+									"    // store all in one variable\r",
+									"    pm.environment.set(\"acquirerList\", JSON.stringify(acquirerMap, null, 2));\r",
+									"\r",
+									"    console.log(\"✅ All acquirer IDs stored in 'acquirerList' variable\");\r",
+									"} else {\r",
+									"    console.log(\"❌ outputData is empty or undefined!\");\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/acquirerTxn/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"acquirerTxn",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "select acquirer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Parse acquirer list from environment\r",
+									"let acquirerList = JSON.parse(pm.environment.get(\"acquirerList\") || \"{}\");\r",
+									"\r",
+									"// Fetch the desired acquirer ID directly (change key as needed)\r",
+									"let acquirerId = acquirerList[\"HDFC\"]; // example: \"test047\" or \"test058\"\r",
+									"\r",
+									"if (!acquirerId) {\r",
+									"    console.log(\"❌ Acquirer not found in acquirerList!\");\r",
+									"} else {\r",
+									"    // Read current request body\r",
+									"    let body = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"    // Inject acquirerId into the body\r",
+									"    body.gtmsCommonRequest.id = acquirerId;\r",
+									"\r",
+									"    // Update request body dynamically (only for this run)\r",
+									"    pm.request.body.update(JSON.stringify(body));\r",
+									"\r",
+									"    console.log(\"✅ Injected Acquirer ID:\", acquirerId);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/acquirerTxn/select",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"acquirerTxn",
+								"select"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update acquirer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Parse acquirer list from environment\r",
+									"let acquirerList = JSON.parse(pm.environment.get(\"acquirerList\") || \"{}\");\r",
+									"\r",
+									"// Fetch the desired acquirer ID directly (change key as needed)\r",
+									"let acquirerId = acquirerList[\"HDFC\"]; // example: \"test047\" or \"test058\"\r",
+									"\r",
+									"if (!acquirerId) {\r",
+									"    console.log(\"❌ Acquirer not found in acquirerList!\");\r",
+									"} else {\r",
+									"    // Read current request body\r",
+									"    let body = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"    // Inject acquirerId into the body\r",
+									"    body.gtmsCommonRequest.id = acquirerId;\r",
+									"\r",
+									"    // Update request body dynamically (only for this run)\r",
+									"    pm.request.body.update(JSON.stringify(body));\r",
+									"\r",
+									"    console.log(\"✅ Injected Acquirer ID:\", acquirerId);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"\"\r\n  },\r\n  \"acquirerTnXInfo\": {\r\n    \"ppName\": \"HDFC\",\r\n    \"ppBaseUrl\": \"https://pn-europa-uat.paynext.co.in/io/v1.0/h2hpayments\",\r\n    \"ppId\": 1011182123,\r\n    \"ppMwRequesterId\": \"2321181110\",\r\n    \"serviceDataProtocol\": \"JSON\",\r\n    \"serviceAuthType\": \"JWT\",\r\n    \"serviceAuthEnabled\": true,\r\n    \"connectivityType\": \"MTLS\",\r\n    \"pinTransRequired\": 3,\r\n    \"dataEncRequired\": 3,\r\n    \"macCheckRequired\": 0,\r\n    \"address\": \"Madhapur\",\r\n    \"city\": \"Hyerabad\",\r\n    \"state\": \"Telangana\",\r\n    \"country\": \"India\",\r\n    \"pinCode\": \"500085\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/acquirerTxn/update",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"acquirerTxn",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Acquirer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Parse acquirer list from environment\r",
+									"let acquirerList = JSON.parse(pm.environment.get(\"acquirerList\") || \"{}\");\r",
+									"\r",
+									"// Fetch the desired acquirer ID directly (change key as needed)\r",
+									"let acquirerId = acquirerList[\"HDFC\"]; // example: \"test047\" or \"test058\"\r",
+									"\r",
+									"if (!acquirerId) {\r",
+									"    console.log(\"❌ Acquirer not found in acquirerList!\");\r",
+									"} else {\r",
+									"    // Read current request body\r",
+									"    let body = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"    // Inject acquirerId into the body\r",
+									"    body.gtmsCommonRequest.id = acquirerId;\r",
+									"\r",
+									"    // Update request body dynamically (only for this run)\r",
+									"    pm.request.body.update(JSON.stringify(body));\r",
+									"\r",
+									"    console.log(\"✅ Injected Acquirer ID:\", acquirerId);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/acquirerTxn/delete",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"acquirerTxn",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Merchant",
+			"item": [
+				{
+					"name": "getAllMerchants",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"\r",
+									"// Check if response exists\r",
+									"if (!pm.response || !pm.response.json) {\r",
+									"    console.log(\"No response received yet.\");\r",
+									"    return;\r",
+									"}\r",
+									"\r",
+									"let res = pm.response.json();\r",
+									"\r",
+									"// Extract merchant list\r",
+									"let merchants = res.outputData || [];\r",
+									"\r",
+									"if (merchants.length > 0) {\r",
+									"    let firstMerchant = merchants[0];\r",
+									"\r",
+									"    // Save merchant name\r",
+									"    pm.environment.set(\"MERCHANT_NAME\", firstMerchant.name);\r",
+									"\r",
+									"    // Save merchant ID (you can choose merchantGivenId or id)\r",
+									"    pm.environment.set(\"MERCHANT_ID\", firstMerchant.id);\r",
+									"\r",
+									"    console.log(\"Saved Merchant:\", firstMerchant.name, firstMerchant.id);\r",
+									"} else {\r",
+									"    console.log(\"Merchant list is empty.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/merchant/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"merchant",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllStores",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/store/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"store",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getConfigfilesForDefaultSelectedMerchant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = pm.response.code;\r",
+									"let responseData = pm.response.json();\r",
+									"\r",
+									"if (status === 200) {\r",
+									"    pm.test(\"Status code is 200 OK\", () => {\r",
+									"        pm.expect(status).to.eql(200);\r",
+									"    });\r",
+									"    pm.test(\"Response time is less than 5000ms\", () => {\r",
+									"        pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"    });\r",
+									"    pm.test(\"Validate success message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.addMessage).to.eql(\"Merchant associated config files\");\r",
+									"    });\r",
+									"}\r",
+									"else if (status != 200) {\r",
+									"    pm.test(\"Status code is 400 Bad Request\", () => {\r",
+									"        pm.expect(status).to.eql(400);\r",
+									"    });\r",
+									"    pm.test(\"Validate error message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.message).to.eql(\"Merchant associated config files are not found with the given merchant id\");\r",
+									"    });\r",
+									"}\r",
+									"else {\r",
+									"\r",
+									"    pm.test(\"Unexpected status code\", () => {\r",
+									"        pm.expect.fail(`Expected 200 or 400, but got ${status}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/configFiles/getByMerchantId",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"configFiles",
+								"getByMerchantId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getParameterForDefaultSelectedMerchant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = pm.response.code;\r",
+									"let responseData = pm.response.json();\r",
+									"\r",
+									"if (status === 200) {\r",
+									"    pm.test(\"Status code is 200 OK\", () => {\r",
+									"        pm.expect(status).to.eql(200);\r",
+									"    });\r",
+									"    pm.test(\"Response time is less than 5000ms\", () => {\r",
+									"        pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"    });\r",
+									"    pm.test(\"Validate success message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.addMessage).to.eql(\"Merchant associated parameters\");\r",
+									"    });\r",
+									"}\r",
+									"else if (status != 200) {\r",
+									"    pm.test(\"Status code is 400 Bad Request\", () => {\r",
+									"        pm.expect(status).to.eql(400);\r",
+									"    });\r",
+									"    pm.test(\"Validate error message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.message).to.eql(\"Merchant associated parameters are not found with the given merchant id\");\r",
+									"    });\r",
+									"}\r",
+									"else {\r",
+									"\r",
+									"    pm.test(\"Unexpected status code\", () => {\r",
+									"        pm.expect.fail(`Expected 200 or 400, but got ${status}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/parameter/getAllMerchantAssociatedParameters",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"parameter",
+								"getAllMerchantAssociatedParameters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addMerchant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"        \r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate merchant created message (partial match)\", function () {\r",
+									"    let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"    pm.expect(msg).to.be.a(\"string\");\r",
+									"    pm.expect(msg).to.include(\"Merchant (\");\r",
+									"    pm.expect(msg).to.include(\") Created Successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"merchantInfo\": {\r\n    \"name\": \"W & B\",\r\n    \"contactName\": \"Warner Brothers\",\r\n    \"email\": \"warner.brothers@yopmail.com\",\r\n    \"phone\": \"1234567890\",\r\n    \"merchantGivenId\": \"115823112025678\"\r\n  },\r\n  \"eventType\": \"MERCHANT\",\r\n  \"eventSubType\": \"CREATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/merchant/add",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"merchant",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchinfAllMerchantAfterAddingNewMerchant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 5000ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"});\r",
+									"\r",
+									"// Parse response\r",
+									"let res = pm.response.json();\r",
+									"// Extract merchant list only once\r",
+									"let merchants = res.outputData || [];\r",
+									"// Store all merchants in map\r",
+									"if (merchants.length > 0) {\r",
+									"\r",
+									"    let merchantMap = {};\r",
+									"\r",
+									"    merchants.forEach(merchant => {\r",
+									"        let baseVarName = merchant.name.trim();\r",
+									"        merchantMap[baseVarName] = merchant.id;\r",
+									"        console.log(`✅ Stored ${baseVarName} = ${merchant.id}`);\r",
+									"    });\r",
+									"\r",
+									"    pm.environment.set(\"merchantList\", JSON.stringify(merchantMap, null, 2));\r",
+									"\r",
+									"    console.log(\"✅ All merchant IDs stored in 'merchantList'\");\r",
+									"} else {\r",
+									"    console.log(\"❌ outputData is empty or undefined!\");\r",
+									"}\r",
+									"// Store first merchant name + id\r",
+									"if (merchants.length > 0) {\r",
+									"\r",
+									"    let firstMerchant = merchants[0];\r",
+									"\r",
+									"    pm.environment.set(\"MERCHANT_NAME\", firstMerchant.name);\r",
+									"    pm.environment.set(\"MERCHANT_ID\", firstMerchant.id);\r",
+									"\r",
+									"    console.log(\"Saved Merchant:\", firstMerchant.name, firstMerchant.id);\r",
+									"\r",
+									"} else {\r",
+									"    console.log(\"Merchant list is empty.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/merchant/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"merchant",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSingleMerchant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/merchant/get",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"merchant",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateMerchant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Validate merchant created message (partial match)\", function () {\r",
+									"    let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"    pm.expect(msg).to.be.a(\"string\");\r",
+									"    pm.expect(msg).to.include(\"Merchant (\");\r",
+									"    pm.expect(msg).to.include(\") Updated Successfully\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  },\r\n  \"contactName\": \"Diseny\",\r\n  \"email\": \"diseny@yopmail.com\",\r\n  \"phone\": \"5678904321\",\r\n  \"eventType\": \"MERCHANT\",\r\n  \"eventSubType\": \"UPDATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/merchant/update",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"merchant",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "merchantBulkUpload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/merchant/merchantsBulkCreate",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"merchant",
+								"merchantsBulkCreate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllKerchantAssociatedStore",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = pm.response.code;\r",
+									"let responseData = pm.response.json();\r",
+									"\r",
+									"if (status === 200) {\r",
+									"    pm.test(\"Status code is 200 OK\", () => {\r",
+									"        pm.expect(status).to.eql(200);\r",
+									"    });\r",
+									"    pm.test(\"Response time is less than 5000ms\", () => {\r",
+									"        pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"    });\r",
+									"    pm.test(\"Validate success message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.message).to.eql(\"Merchant associated stores\");\r",
+									"    });\r",
+									"}\r",
+									"else if (status != 200) {\r",
+									"    pm.test(\"Status code is 400 Bad Request\", () => {\r",
+									"        pm.expect(status).to.eql(400);\r",
+									"    });\r",
+									"    pm.test(\"Validate error message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.message).to.eql(\"Merchant associated stores are not found with the given merchant id\");\r",
+									"    });\r",
+									"}\r",
+									"else {\r",
+									"\r",
+									"    pm.test(\"Unexpected status code\", () => {\r",
+									"        pm.expect.fail(`Expected 200 or 400, but got ${status}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/store/getAllMerchantAssociatedStores",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"store",
+								"getAllMerchantAssociatedStores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createSTore",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"        let responseData = pm.response.json();\r",
+									"pm.test(\"Validate created created message (partial match)\", function () {\r",
+									"    let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"    pm.expect(msg).to.be.a(\"string\");\r",
+									"    pm.expect(msg).to.include(\"Store (\");\r",
+									"    pm.expect(msg).to.include(\") Created Successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"storeInfo\": {\r\n    \"name\": \"Warner brothers store\",\r\n    \"merchantId\": \"{{MERCHANT_ID}}\",\r\n    \"merchantName\": \"{{MERCHANT_NAME}}\",\r\n    \"contactName\": \"warner\",\r\n    \"contactEmail\": \"warner@yopmail.com\",\r\n    \"contactPhone\": \"6224922120\",\r\n    \"area\": \"lodon\",\r\n    \"pinCode\": \"357662\",\r\n    \"state\": \"Newyork\",\r\n    \"locality\": \"sidney\",\r\n    \"heartBeatTimeInterval\": 10\r\n  },\r\n  \"eventType\": \"STORE\",\r\n  \"eventSubType\": \"CREATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/store/add",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"store",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchingAllStoreAfterAddingNewStore",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									" let res = pm.response.json();\r",
+									"let stores = res.outputData;\r",
+									"\r",
+									"if (stores && stores.length > 0) {\r",
+									"    let storeMap = {};\r",
+									"\r",
+									"    stores.forEach(store => {\r",
+									"        let baseVarName = store.name.trim();\r",
+									"\r",
+									"        // build the map (name → id)\r",
+									"        storeMap[baseVarName] = store.id;\r",
+									"\r",
+									"        console.log(`✅ Stored ${baseVarName} = ${store.id}`);\r",
+									"    });\r",
+									"\r",
+									"    // store all in one variable\r",
+									"    pm.environment.set(\"storeList\", JSON.stringify(storeMap, null, 2));\r",
+									"\r",
+									"    console.log(\"✅ All store IDs stored in 'storeList' variable\");\r",
+									"} else {\r",
+									"    console.log(\"❌ outputData is empty or undefined!\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/store/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"store",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSingleStore",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Parse store list from environment\r",
+									"let storeList = JSON.parse(pm.environment.get(\"storeList\") || \"{}\");\r",
+									"\r",
+									"// Fetch the desired store ID directly (change key as needed)\r",
+									"let storeId = storeList[\"Warner brothers store\"]; // example: \"Warner brothers store\" or \"zudio1\"\r",
+									"\r",
+									"if (!storeId) {\r",
+									"    console.log(\"❌ Store not found in storeList!\");\r",
+									"} else {\r",
+									"    // Read current request body\r",
+									"    let body = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"    // Inject storeId into the body\r",
+									"    body.gtmsCommonRequest.id = storeId;\r",
+									"\r",
+									"    // Update request body dynamically (only for this run)\r",
+									"    pm.request.body.update(JSON.stringify(body));\r",
+									"\r",
+									"    console.log(\"✅ Injected Store ID:\", storeId);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/store/select",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"store",
+								"select"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStore",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});\r",
+									"\r",
+									"// Parse store list from environment\r",
+									"let storeList = JSON.parse(pm.environment.get(\"storeList\") || \"{}\");\r",
+									"\r",
+									"// Fetch the desired store ID directly (change key as needed)\r",
+									"let storeId = storeList[\"Warner brothers store\"]; // example: \"Warner brothers store\" or \"zudio1\"\r",
+									"\r",
+									"if (!storeId) {\r",
+									"    console.log(\"❌ Store not found in storeList!\");\r",
+									"} else {\r",
+									"    // Read current request body\r",
+									"    let body = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"    // Inject storeId into the body\r",
+									"    body.gtmsCommonRequest.id = storeId;\r",
+									"\r",
+									"    // Update request body dynamically (only for this run)\r",
+									"    pm.request.body.update(JSON.stringify(body));\r",
+									"\r",
+									"    console.log(\"✅ Injected Store ID:\", storeId);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"               let responseData = pm.response.json();\r",
+									"pm.test(\"Validate created message (partial match)\", function () {\r",
+									"    let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"    pm.expect(msg).to.be.a(\"string\");\r",
+									"    pm.expect(msg).to.include(\"Store (\");\r",
+									"    pm.expect(msg).to.include(\") Updated Successfully\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"\"\r\n  },\r\n  \"contactName\": \"David Zaslav\",\r\n  \"contactEmail\": \"david.zaslav@yopmail.com\",\r\n  \"contactPhone\": \"7654144889\",\r\n  \"area\": \"Hitechcity\",\r\n  \"pinCode\": \"369490\",\r\n  \"state\": \"Telangana\",\r\n  \"locality\": \"India\",\r\n  \"heartBeatTimeInterval\": 100,\r\n  \"eventType\": \"STORE\",\r\n  \"eventSubType\": \"UPDATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/store/update",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"store",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllMerchantAssociatedDevices",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = pm.response.code;\r",
+									"let responseData = pm.response.json();\r",
+									"\r",
+									"if (status === 200) {\r",
+									"    pm.test(\"Status code is 200 OK\", () => {\r",
+									"        pm.expect(status).to.eql(200);\r",
+									"    });\r",
+									"    pm.test(\"Response time is less than 5000ms\", () => {\r",
+									"        pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"    });\r",
+									"    pm.test(\"Validate success message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.message).to.eql(\"Merchant associated devices\");\r",
+									"    });\r",
+									"}\r",
+									"else if (status != 200) {\r",
+									"    pm.test(\"Status code is 400 Bad Request\", () => {\r",
+									"        pm.expect(status).to.eql(400);\r",
+									"    });\r",
+									"    pm.test(\"Validate error message\", () => {\r",
+									"        pm.expect(responseData.apiOutContext.message).to.eql(\"Merchant associated devices are not found with the given merchant id\");\r",
+									"    });\r",
+									"}\r",
+									"else {\r",
+									"\r",
+									"    pm.test(\"Unexpected status code\", () => {\r",
+									"        pm.expect.fail(`Expected 200 or 400, but got ${status}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/device/getAllDevicesByMerchantId",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"device",
+								"getAllDevicesByMerchantId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllParmeters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/parameter/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"parameter",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addParmeters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									" let responseData = pm.response.json();\r",
+									"pm.test(\"Validate created message (partial match)\", ()=>{\r",
+									"    let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"    pm.expect(msg).to.be.a(\"string\");\r",
+									"    pm.expect(msg).to.include(\"Parameter (\");\r",
+									"    pm.expect(msg).to.include(\") Created Successfully\");\r",
+									"    });\r",
+									"\r",
+									"    pm.environment.set(\"parameterID\", responseData.outputData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"parameterInfo\": {\r\n    \"parameterInformation\": \"{{PARAMETERS}}\",\r\n    \"merchantId\": \"{{MERCHANT_ID}}\"\r\n  },\r\n  \"eventType\": \"PARAMETER\",\r\n  \"eventSubType\": \"CREATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/parameter/add",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"parameter",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "merchantAssociatedParmeter",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/parameter/getAllMerchantAssociatedParameters",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"parameter",
+								"getAllMerchantAssociatedParameters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectParmeter",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{parameterID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/parameter/select",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"parameter",
+								"select"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateParmeters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"//                let responseData = pm.response.json();\r",
+									"// pm.test(\"Validate created message (partial match)\", function () {\r",
+									"//     let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"//     pm.expect(msg).to.be.a(\"string\");\r",
+									"//     pm.expect(msg).to.include(\"Parameter (\");\r",
+									"//     pm.expect(msg).to.include(\") Updated Successfully\");\r",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{parameterID}}\"\r\n  },\r\n  \"parameterInformation\": \"{{updateParm}}\",\r\n  \"eventType\": \"PARAMETER\",\r\n  \"eventSubType\": \"UPDATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/parameter/update",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"parameter",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllConfigfiles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/configFiles/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"configFiles",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addConfigfiles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									" let responseData = pm.response.json();\r",
+									"pm.test(\"Validate created created message (partial match)\", ()=> {\r",
+									"    let msg = responseData.apiOutContext.message || responseData.apiOutContext.addMessage;\r",
+									"    pm.expect(msg).to.be.a(\"string\");\r",
+									"    pm.expect(msg).to.include(\"ConfigFiles (\");\r",
+									"    pm.expect(msg).to.include(\") Created Successfully\");\r",
+									"    });\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"configFileId\", responseData.outputData.id);\r",
+									"console.log(\"configFileId saved Successfully:\", responseData.outputData.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"configFilesInfo\": {\r\n    \"merchantId\": \"{{MERCHANT_ID}}\",\r\n    \"configInfo\": \"{{CONFIGFILES}}\"\r\n  },\r\n  \"eventType\": \"CONFIGFILES\",\r\n  \"eventSubType\": \"CREATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/configFiles/add",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"configFiles",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "merchantAssociatedConfigfiles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MERCHANT_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/configFiles/getByMerchantId",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"configFiles",
+								"getByMerchantId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectConfigfiles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{configFileId}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/configFiles/select",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"configFiles",
+								"select"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Model",
+			"item": [
+				{
+					"name": "getAllModels",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/model/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"model",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addModel",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"modelInfo\": {\r\n    \"name\": \"IQOO Z3\",\r\n    \"oem\": \"VIVO\",\r\n    \"description\": \"TESTING PURPOSE\"\r\n  },\r\n  \"eventType\": \"MODEL\",\r\n  \"eventSubType\": \"CREATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/model/add",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"model",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchingAllModelsAfteringAdingModel",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );\r",
+									"\r",
+									"\r",
+									"\r",
+									"        // Parse response\r",
+									"let res = pm.response.json();\r",
+									"// Extract models list only once\r",
+									"let models = res.outputData || [];\r",
+									"// Store all models in map\r",
+									"if (models.length > 0) {\r",
+									"\r",
+									"    let modelMap = {};\r",
+									"\r",
+									"    models.forEach(model => {\r",
+									"        let baseVarName = model.name.trim();\r",
+									"        modelMap[baseVarName] = model.id;\r",
+									"        console.log(`✅ Stored ${baseVarName} = ${model.id}`);\r",
+									"    });\r",
+									"\r",
+									"    pm.environment.set(\"modelList\", JSON.stringify(modelMap, null, 2));\r",
+									"\r",
+									"    console.log(\"✅ All models IDs stored in 'merchantList'\");\r",
+									"} else {\r",
+									"    console.log(\"❌ outputData is empty or undefined!\");\r",
+									"}\r",
+									"// Store first merchant name + id\r",
+									"if (models.length > 0) {\r",
+									"\r",
+									"    let firstModel = models[0];\r",
+									"\r",
+									"    pm.environment.set(\"MODEL_NAME\", firstModel.name);\r",
+									"    pm.environment.set(\"MODEL_ID\", firstModel.id);\r",
+									"\r",
+									"    console.log(\"Saved Model:\", firstModel.name, firstModel.id);\r",
+									"\r",
+									"} else {\r",
+									"    console.log(\"Model list is empty.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/model/getAll",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"model",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectModel",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MODEL_ID}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/model/select",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"model",
+								"select"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateModel",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  },\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"gtmsCommonRequest\": {\r\n    \"id\": \"{{MODEL_ID}}\"\r\n  },\r\n  \"eventType\": \"MODEL\",\r\n  \"eventSubType\": \"UPDATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/model/update",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"model",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "getDeviceConnectionReport",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getDeviceConnectionsReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getDeviceConnectionsReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDeviceHeartBeaReport",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getDeviceConnectionsReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getDeviceConnectionsReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDeviceSearchReport",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getDeviceSearchReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getDeviceSearchReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDeviceParametersStatusReport",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let token = pm.environment.get(\"Access token\");\r",
+									"\r",
+									"pm.request.headers.add({\r",
+									"    key:\"Authorization\",\r",
+									"    value:\"Bearer \" + token\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 ok\", () =>{\r",
+									"          pm.response.to.have.status(200);\r",
+									"          }\r",
+									"        );\r",
+									"pm.test(\"Response time is less than 5000ms\", ()=>{\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"         }\r",
+									"        );"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"apiInContext\": {\r\n    \"inputRefId\": \"string\",\r\n    \"timeStamp\": \"string\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gtmsbaseurl}}/api/ina/tms/reports/getDeviceParameterStatusReport",
+							"host": [
+								"{{gtmsbaseurl}}"
+							],
+							"path": [
+								"api",
+								"ina",
+								"tms",
+								"reports",
+								"getDeviceParameterStatusReport"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
